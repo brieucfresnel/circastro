@@ -1,0 +1,578 @@
+@use "../base/variables" as *;
+@use "../base/mixins" as *;
+
+.l-navbar {
+  $root: &;
+  padding: 20px 0 10px;
+  position: relative;
+  z-index: 99;
+  margin-bottom: 15px;
+
+  &.fix-admin-bar {
+    top: 32px;
+  }
+
+  // Deco
+  &__menu-open-deco {
+    display: none;
+
+    mix-blend-mode: darken;
+
+    width: 100%;
+    height: auto;
+    object-fit: contain;
+
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 0;
+  }
+
+  &__container {
+    display: flex;
+    align-items: stretch;
+    justify-content: space-between;
+    padding: 0 calc(40px / 1.5 / 2);
+
+    position: relative;
+    z-index: 0;
+
+    &::before {
+      content: "";
+      max-width: calc(100vw - 40px / 1.5);
+      display: block;
+      width: 100%;
+      min-height: 20px;
+
+      position: absolute;
+      top: calc(100% + 11px);
+
+      background-image: radial-gradient(ellipse, $black 3px, transparent 3px);
+      background-size: 20px 20px;
+      background-position: 0 0;
+      background-repeat: repeat-x;
+    }
+
+    &::after {
+      opacity: 0;
+      content: "";
+      display: block;
+      width: 100vw;
+      height: 120%;
+      position: absolute;
+      left: 0;
+      top: 94px;
+      background-color: $gray;
+      z-index: -1;
+    }
+  }
+
+  &__logo {
+    min-width: 115px;
+
+    img {
+      display: block;
+      width: 115px;
+      height: auto;
+    }
+  }
+
+  &__menus {
+    padding-top: 60px;
+    opacity: 0;
+
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    position: absolute;
+    left: -9999px;
+  }
+
+  &__main-menu {
+    gap: 5px;
+
+    a {
+      font-weight: bold;
+      text-decoration: none;
+      width: fit-content;
+      background: transparent;
+      color: $black;
+
+      font-size: 1.75rem;
+
+      padding: 6px 12px;
+      clip-path: polygon(0 13%, 100% 0, 100% 90%, 8% 95%);
+
+      transition: all 0.3s ease-in-out;
+
+      &.is-gray {
+        background: $gray;
+        clip-path: polygon(0 0, 100% 12%, 96% 97%, 7% 93%);
+      }
+
+      &.current_page_item {
+        background: $red;
+        color: $white;
+        overflow: hidden;
+        position: relative;
+
+        &::before {
+          content: "";
+          background: url("/wp-content/themes/dotcirca/assets/img/button-texture.png")
+            center/cover no-repeat;
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
+      }
+
+      &.c-button {
+        background: $red;
+        color: $white;
+        clip-path: unset;
+        margin-left: 10px;
+      }
+    }
+  }
+
+  &__side-menu {
+    align-items: flex-end;
+    gap: 8px;
+    padding-right: 20px;
+
+    a {
+      font-size: 1.125rem;
+      line-height: 1.2;
+      text-decoration: none;
+      color: $gray-darker;
+    }
+  }
+
+  &__cta-toggle {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding-right: 56px;
+  }
+
+  &__cta {
+    font-weight: bold;
+    pointer-events: all;
+
+    &--mobile {
+      opacity: 1;
+      transition: opacity 0.3s;
+    }
+  }
+
+  &__socials {
+    display: none;
+    width: 100%;
+    justify-content: flex-end;
+    pointer-events: all;
+    gap: 8px;
+    margin-top: 20px;
+
+    > a {
+      background-color: $white;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      display: inline-grid;
+      place-items: center;
+    }
+
+    > a:nth-child(4) path {
+      &:first-child {
+        stroke: $black;
+        fill: transparent;
+      }
+
+      &:last-child {
+        fill: $black;
+      }
+    }
+
+    > a:not(:nth-child(4)):not(:nth-child(5)) path {
+      fill: transparent;
+      stroke: $black;
+    }
+  }
+
+  &__toggle {
+    position: fixed;
+    top: 21.5px;
+    right: calc(40px / 1.5 / 2);
+  }
+
+  &[data-is-open] {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 99;
+    padding-top: 0;
+    padding-bottom: 0;
+
+    overflow-y: scroll;
+    overflow-x: hidden;
+    width: 100%;
+    min-height: 100vh;
+    background-color: $white;
+
+    @supports (-webkit-touch-callout: none) {
+      min-height: calc(100vh + 154px);
+    }
+
+    #{$root}__menu-open-deco {
+      display: block;
+    }
+
+    #{$root}__container {
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: flex-start;
+      height: 100%;
+      overflow-y: scroll;
+
+      &::before {
+        top: 85px;
+        bottom: unset;
+      }
+
+      &::after {
+        opacity: 1;
+        transition: opacity 0.3s;
+      }
+    }
+
+    #{$root}__cta {
+      &--mobile {
+        opacity: 0;
+        pointer-events: none;
+        overflow: hidden;
+        position: fixed;
+        left: -99999px;
+      }
+    }
+
+    #{$root}__logo {
+      width: 115px;
+      position: relative;
+      top: 20px;
+    }
+
+    #{$root}__menus {
+      transition: opacity 0.3s;
+      opacity: 1;
+      // overflow: hidden;
+      height: auto;
+      position: static;
+    }
+
+    #{$root}__menu {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #{$root}__side-menu {
+      margin-top: -80px;
+      width: fit-content;
+      margin-left: auto;
+    }
+
+    #{$root}__socials {
+      display: flex;
+      justify-content: center;
+    }
+  }
+
+  @include media-breakpoint-up(xs) {
+    &__container {
+      padding: 0 calc($container-base-margin / 2);
+
+      &::before {
+        max-width: calc(100vw - $container-base-margin);
+      }
+    }
+
+    &__menu-open-deco {
+      max-width: 400px;
+    }
+
+    &__toggle {
+      right: calc($container-base-margin / 2);
+    }
+  }
+
+  @include media-breakpoint-up(md) {
+    &__container {
+      padding: 0 $container-base-margin;
+
+      &::before {
+        max-width: calc(100vw - $container-base-margin * 2);
+      }
+    }
+
+    &__toggle {
+      right: $container-base-margin;
+    }
+  }
+
+  @media screen and (min-width: 1880px) {
+    &__container {
+      padding: 0 calc((100vw - $container-limit) / 2);
+    }
+
+    &__toggle {
+      right: calc((100vw - $container-limit) / 2);
+    }
+  }
+
+  @media screen and (min-width: $hamburger-breakpoint) {
+    margin-bottom: 0;
+    position: sticky;
+    left: 0;
+    top: 0;
+    background-color: $white;
+    transition: all 0.3s;
+
+    &.is-condensed {
+      padding: 0 0 10px;
+      transform: translateY(-30px);
+
+      #{$root}__socials {
+        top: -100%;
+      }
+
+      #{$root}__container::before {
+        display: none;
+      }
+
+      #{$root}__logo {
+        top: 25px;
+        height: 70px;
+      }
+
+      #{$root}__cta-toggle {
+        bottom: -5px;
+      }
+    }
+
+    &.is-condensed,
+    &.is-hover {
+      box-shadow: 0px 5px 3px -5px rgba(#000, 0.4);
+    }
+
+    &.is-hover &__container::before {
+      display: none;
+    }
+
+    &__container {
+      position: relative;
+
+      &::after {
+        content: none;
+      }
+
+      &::before {
+        bottom: -20px;
+        top: unset;
+        left: $container-base-margin;
+        right: $container-base-margin;
+        max-width: calc(100vw - $container-base-margin * 2);
+      }
+    }
+
+    &__logo {
+      position: relative;
+      top: 0;
+      min-width: unset;
+      height: 140px;
+      transition: all 0.3s;
+
+      img {
+        height: 100%;
+        width: auto;
+        object-fit: contain;
+        transition: all 0.3s;
+      }
+    }
+
+    &__menus {
+      opacity: 1;
+      height: auto;
+      padding: 0;
+      display: flex;
+      flex-direction: column-reverse;
+      justify-content: center;
+      gap: 15px;
+      padding-left: 20px;
+      position: static;
+    }
+
+    &__main-menu {
+      display: flex;
+      align-items: flex-end;
+      gap: 15px;
+
+      a {
+        padding: 9px 10px 9px 12px;
+        font-size: clamp(0.875rem, 0.8vw + 0.65rem, 1.5rem);
+      }
+
+      a:hover {
+        background: $red;
+        color: $white;
+
+        overflow: hidden;
+        position: relative;
+
+        &::before {
+          content: "";
+          background: url("/wp-content/themes/dotcirca/assets/img/button-texture.png")
+            center/cover no-repeat;
+          width: 100%;
+          height: 100%;
+          position: absolute;
+          top: 0;
+          left: 0;
+        }
+      }
+    }
+
+    &__side-menu {
+      a {
+        margin: 6px 10px;
+        font-size: 1.3125rem;
+        position: relative;
+        transition: color 0.3s;
+
+        &::before {
+          content: "";
+          position: absolute;
+          top: 100%;
+          left: 0;
+          width: 0;
+          background: $red;
+          height: 1px;
+          transition: width 0.3s;
+        }
+
+        &:hover {
+          color: $red;
+        }
+
+        &:hover::before {
+          width: 100%;
+        }
+      }
+    }
+
+    &__cta--in-menu {
+      display: none !important;
+    }
+
+    &__cta-toggle {
+      align-items: flex-end;
+      position: relative;
+      bottom: 25px;
+      pointer-events: none;
+      padding: 0;
+      transition: all 0.3s;
+    }
+
+    &__socials {
+      position: absolute;
+      top: 0;
+      right: $container-base-margin;
+      padding: 0;
+      display: flex;
+      gap: 0;
+      width: fit-content;
+
+      a {
+        background-color: transparent;
+        transition: background-color 0.3s;
+      }
+
+      a:hover {
+        background-color: $gray;
+      }
+    }
+  }
+}
+
+.c-navbar-toggle {
+  z-index: 100;
+  overflow: hidden;
+
+  min-width: 51px;
+  min-height: 51px;
+  background-color: $red;
+  border-radius: 50%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+
+  cursor: pointer;
+
+  transition: all 0.3s;
+
+  &::before {
+    content: "";
+    background: url("/wp-content/themes/dotcirca/assets/img/button-texture.png")
+      center/cover no-repeat;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  span {
+    display: block;
+    width: 45%;
+    height: 2px;
+
+    background-color: $white;
+    opacity: 1;
+
+    transform: rotate(0deg);
+    transition: 0.4s ease-in-out;
+    position: absolute;
+
+    &:first-child {
+      right: 10px;
+      top: 20px;
+    }
+
+    &:last-child {
+      left: 13px;
+      bottom: 20px;
+    }
+  }
+
+  @at-root .l-navbar[data-is-open] & span {
+    &:nth-child(1) {
+      transform: translate(-1.3px, 4.2px) rotate(-45deg);
+      width: 55%;
+    }
+
+    &:nth-child(2) {
+      transform: translate(-1.5px, -4.5px) rotate(45deg);
+      width: 54.5%;
+    }
+  }
+
+  @media screen and (min-width: $hamburger-breakpoint) {
+    display: none;
+  }
+}

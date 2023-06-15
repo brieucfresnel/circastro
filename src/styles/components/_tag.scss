@@ -1,0 +1,81 @@
+@use "../base/variables" as *;
+@use "../base/mixins" as *;
+
+.c-tag {
+  display: inline-flex;
+  border-radius: 6px;
+  gap: 5px;
+  padding: 3px 6px 0.5px;
+  background-color: transparent;
+  border: 1px solid transparent;
+
+  font-family: $font-headings;
+  font-size: 0.8125rem;
+  line-height: 1.2;
+  text-transform: uppercase;
+  
+  svg  {
+    position: relative;
+    top: 1px;
+  }
+
+  &--red-light {
+    color: $black;
+    border-color: $red-light;
+    background-color: $red-light;
+  }
+
+  &--yellow-light {
+    color: $black;
+    border-color: $yellow-light;
+    background-color: $yellow-light;
+  }
+
+  &--black {
+    background-color: $black;
+    border-color: $black;
+    color: $white;
+
+    svg path {
+      fill: $white;
+    }
+  }
+
+  &--white {
+    background-color: $white;
+    border-color: $white;
+    color: $black;
+    
+    svg path {
+      fill: $black;
+    }
+  }
+}
+
+.c-status-tag {
+  display: inline-flex;
+  gap: 3px;
+
+  padding: 3px 6px;
+  border-radius: 6px;
+
+  font-size: 0.9375rem;
+  border: 1px solid transparent;
+
+  color: $white;
+  text-transform: uppercase;
+  font-weight: 700;
+  line-height: 1;
+
+  &--red {
+    background-color: $red;
+  }
+
+  &--yellow {
+    background-color: $yellow-2;
+  }
+
+  &--blue-light {
+    background-color: $blue-light;
+  }
+}

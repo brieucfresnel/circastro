@@ -1,0 +1,133 @@
+---
+const { title, text } = Astro.props;
+---
+
+<div class="f-content-cards-grid__item c-content-card">
+    <div class="c-content-card__main">
+        <div class="c-content-card__titles">
+            <h3 class="c-content-card__title">{title}</h3>
+        </div>
+        <div class="c-content-card__texts">
+            <div class="c-content-card__text wysiwyg body-lg">
+                {text}
+            </div>
+        </div>
+    </div>
+</div>
+
+<style lang="scss">
+    @use "../../../styles/base/_variables.scss" as *;
+    @use "../../../styles/base/_mixins" as *;
+    .c-content-card {
+        color: $black;
+
+        @at-root .cols-2 &__main {
+            padding: 0 20px;
+        }
+
+        &__thumbnail {
+            border-radius: 10px;
+            margin-bottom: 20px;
+
+            &.is-contain {
+                object-fit: contain;
+            }
+        }
+
+        &__titles {
+            margin: 0 0 10px 0;
+        }
+
+        &__title-en {
+            color: $brown-light;
+        }
+
+        &__texts {
+            margin-bottom: 20px;
+
+            p {
+                margin: 0;
+            }
+        }
+
+        &__text-en {
+            margin-top: 20px;
+            color: $brown-light;
+        }
+
+        @include media-breakpoint-up(sm) {
+            padding-bottom: 20px;
+
+            &__thumbnail {
+                width: 100%;
+                object-fit: cover;
+                margin-bottom: 45px;
+
+                &.is-contain {
+                    object-fit: contain;
+                }
+            }
+
+            &__text-en {
+                padding-left: 40px;
+            }
+
+            @at-root .cols-2 &__thumbnail {
+                height: 300px;
+                max-height: 300px;
+            }
+
+            @at-root .cols-3 &__thumbnail {
+                height: 200px;
+                max-height: 200px;
+            }
+        }
+
+        @include media-breakpoint-up(md) {
+            padding-bottom: 40px;
+
+            @at-root .cols-2 &__main {
+                padding: 0 12%;
+            }
+
+            @at-root .cols-2 &__thumbnail {
+                height: 300px;
+                max-height: 300px;
+            }
+
+            @at-root .cols-3 &__thumbnail {
+                height: 200px;
+                max-height: 200px;
+            }
+        }
+
+        @include media-breakpoint-up(lg) {
+            &__items {
+                gap: 15px 80px;
+            }
+
+            @at-root .cols-2 &__thumbnail {
+                margin-bottom: 50px;
+                height: 400px;
+                max-height: 400px;
+            }
+
+            @at-root .cols-3 &__thumbnail {
+                height: 300px;
+                max-height: 300px;
+            }
+        }
+
+        @include media-breakpoint-up(xl) {
+            @at-root .cols-2 &__thumbnail {
+                height: 500px;
+                max-height: 500px;
+            }
+
+            @at-root .cols-3 &__thumbnail {
+                height: 400px;
+                max-height: 400px;
+            }
+        }
+    }
+</style>

@@ -1,0 +1,111 @@
+@use "./variables" as *;
+
+.bg-white {
+  background-color: $white;
+}
+.bg-real-black {
+  background-color: $real-black;
+}
+.bg-black {
+  background-color: $black;
+}
+.bg-yellow-lightest {
+  background-color: $yellow-lightest;
+}
+.bg-yellow-light {
+  background-color: $yellow-light;
+}
+.bg-yellow-2 {
+  background-color: $yellow-2;
+}
+.bg-yellow {
+  background-color: $yellow;
+}
+.bg-gray-darker {
+  background-color: $gray-darker;
+}
+.bg-gray {
+  background-color: $gray;
+}
+.bg-red {
+  background-color: $red;
+}
+.bg-red-dark {
+  background-color: $red-dark;
+}
+.bg-red-light {
+  background-color: $red-light;
+}
+.bg-purple {
+  background-color: $purple;
+}
+.bg-blue {
+  background-color: $blue;
+}
+.bg-blue-light {
+  background-color: $blue-light;
+}
+.bg-blue-dark {
+  background-color: $blue-dark;
+}
+.bg-green {
+  background-color: $green;
+}
+.bg-brown-light {
+  background-color: $brown-light;
+}
+
+.text-white {
+  color: $white;
+}
+.text-real-black {
+  color: $real-black;
+}
+.text-black {
+  color: $black;
+}
+.text-yellow-lightest {
+  color: $yellow-lightest;
+}
+.text-yellow-light {
+  color: $yellow-light;
+}
+.text-yellow-2 {
+  color: $yellow-2;
+}
+.text-yellow {
+  color: $yellow;
+}
+.text-gray-darker {
+  color: $gray-darker;
+}
+.text-gray {
+  color: $gray;
+}
+.text-red {
+  color: $red;
+}
+.text-red-dark {
+  color: $red-dark;
+}
+.text-red-light {
+  color: $red-light;
+}
+.text-purple {
+  color: $purple;
+}
+.text-blue {
+  color: $blue;
+}
+.text-blue-light {
+  color: $blue-light;
+}
+.text-blue-dark {
+  color: $blue-dark;
+}
+.text-green {
+  color: $green;
+}
+.text-brown-light {
+  color: $brown-light;
+}

@@ -1,0 +1,74 @@
+// Fonts
+$font-headings: "CircA-Tampona", serif;
+$font-body: "Baton", sans-serif;
+
+// Colors
+$white: #fff;
+$real-black: #000;
+$black: #26211f;
+$yellow-lightest: #fef9e8;
+$yellow-light: #ffdf8d;
+$yellow-2: #fabf39;
+$yellow: #fbb90d;
+$gray-darker: #474747;
+$gray: #e5e5e5;
+$red: #ea1f25;
+$red-dark: #d02e26;
+$red-light: #ff8a8a;
+$purple: #8c73d6;
+$blue: #3a82c2;
+$blue-light: #96aaee;
+$blue-dark: #332682;
+$green: #57c177;
+$brown-light: #ac8888;
+
+$clr-text-selection: $white;
+$clr-text-selection-bg: $black;
+$clr-link: $blue;
+$clr-primary: $red;
+
+$radius-sm: 14px;
+$radius: 20px;
+$radius-xl: 50px;
+
+// BREAKPOINTS ========================================
+$screen-sm: 576px;
+$screen-md: 768px;
+$screen-lg: 992px;
+$screen-xl: 1200px;
+$screen-xxl: 1400px;
+
+// Container
+$container-base-margin: 40px;
+$container-base-margin-sm: 80px;
+$container-limit: 1800px;
+$container-limit-sm: 1700px;
+
+// HAMBURGER ==========================================
+// Possibles values : always / with-breakpoint / none
+$is-hamburger: with-breakpoint;
+$hamburger-breakpoint: 1290px;
+// Transitions
+// Visualise there : https://greensock.com/ease-visualizer/
+// ====================================================
+$speed: 0.3s;
+$bounce: cubic-bezier(0.17, 0.67, 0.3, 1.33);
+$Power1EaseOut: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+$Power2EaseOut: cubic-bezier(0.215, 0.61, 0.355, 1);
+$Power3EaseOut: cubic-bezier(0.165, 0.84, 0.44, 1);
+$Power4EaseOut: cubic-bezier(0.23, 1, 0.32, 1);
+$Power1EaseIn: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+$Power2EaseIn: cubic-bezier(0.55, 0.055, 0.675, 0.19);
+$Power3EaseIn: cubic-bezier(0.895, 0.03, 0.685, 0.22);
+$Power4EaseIn: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+$ExpoEaseOut: cubic-bezier(0.19, 1, 0.22, 1);
+$ExpoEaseIn: cubic-bezier(0.95, 0.05, 0.795, 0.035);
+$ExpoEaseInOut: cubic-bezier(1, 0, 0, 1);
+$SineEaseOut: cubic-bezier(0.39, 0.575, 0.565, 1);
+$SineEaseIn: cubic-bezier(0.47, 0, 0.745, 0.715);
+$Power1EaseInOut: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+$Power2EaseInOut: cubic-bezier(0.645, 0.045, 0.355, 1);
+$Power3EaseInOut: cubic-bezier(0.77, 0, 0.175, 1);
+$Power4EaseInOut: cubic-bezier(0.86, 0, 0.07, 1);
+$SlowEaseOut: cubic-bezier(0.04, 1.15, 0.4, 0.99);
+$easing: $Power2EaseOut;

@@ -1,0 +1,40 @@
+@use "../base/variables" as *;
+@use "../base/breakpoints" as *;
+@use "../base/mixins" as *;
+
+.l-container {
+  margin: 0 auto;
+  width: 100%;
+  max-width: calc(100vw - #{$container-base-margin} / 1.5);
+
+  @include media-breakpoint-up(xs) {
+    max-width: calc(100vw - #{$container-base-margin});
+  }
+
+  @include media-breakpoint-up(md) {
+    max-width: calc(100vw - #{$container-base-margin} * 2);
+  }
+
+  @media screen and (min-width: 1880px) {
+    max-width: $container-limit;
+  }
+}
+
+.l-container-sm {
+  margin: 0 auto;
+  width: 100%;
+
+  max-width: calc(100vw - #{$container-base-margin-sm} / 2);
+
+  @include media-breakpoint-up(xs) {
+    max-width: calc(100vw - #{$container-base-margin-sm});
+  }
+
+  @include media-breakpoint-up(md) {
+    max-width: calc(100vw - #{$container-base-margin-sm} * 2);
+  }
+
+  @media screen and (min-width: 1880px) {
+    max-width: $container-limit-sm;
+  }
+}

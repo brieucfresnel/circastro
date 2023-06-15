@@ -1,0 +1,19 @@
+@use "../base/variables" as *;
+@use "../base/mixins" as *;
+
+.wysiwyg {
+  a {
+    color: $black;
+    text-decoration: underline;
+    text-underline-offset: 4px;
+    text-decoration-color: $red;
+
+    display: inline-flex;
+    margin-bottom: 5px;
+    transition: all 0.3s;
+  }
+
+  a:hover {
+    color: $red;
+  }
+}

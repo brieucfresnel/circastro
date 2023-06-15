@@ -1,0 +1,29 @@
+@use "../base/variables" as *;
+@use "../base/mixins" as *;
+
+.c-slider {
+  &__index {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: fit-content;
+    margin: 15px auto 0;
+
+    background-color: $gray-darker;
+    border-radius: 20px;
+    color: $white;
+  }
+
+  &__prev,
+  &__next {
+    padding: 12px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+}
+
+.slick-dots {
+  display: none !important;
+}

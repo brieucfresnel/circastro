@@ -1,0 +1,57 @@
+---
+const { page } = Astro.props;
+
+if (!page[0]?.acf?.dot_layouts) {
+    console.log("Could not find layouts data on page: ", page[0].slug);
+    return;
+}
+
+const layoutsData = page[0]?.acf.dot_layouts;
+
+const componentsArray = layoutsData
+    .map((layoutData) => {
+        const layout = {
+            data: layoutData,
+            componentName: "",
+        };
+
+        switch (layoutData.acf_fc_layout) {
+            case "cartes-de-couleur":
+                layout.componentName = "ColorCardsCarousel";
+                break;
+            case "texte-media":
+                layout.componentName = "TextMedia";
+                break;
+            case "accordeons-faq":
+                layout.componentName = "Accordions";
+                break;
+            case "grille-de-cartes-de-contenu":
+                layout.componentName = "ContentCardsGrid";
+                break;
+        }
+
+        return layout;
+    })
+    .filter((layout) => {
+        return layout.componentName.length ? layout : null;
+    });
+
+const loadComponents = (componentsArray) => {
+    return Promise.all(
+        componentsArray.map(async (entry) => {
+            return {
+                Component: (
+                    await import(
+                        `./layouts/${entry.componentName}/${entry.componentName}.astro`
+                    )
+                ).default,
+                data: entry.data,
+            };
+        })
+    );
+};
+
+const layouts = await loadComponents(componentsArray);
+---
+
+{layouts.map((layout) => <layout.Component data={layout.data} />)}

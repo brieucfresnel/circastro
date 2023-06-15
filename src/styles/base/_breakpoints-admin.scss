@@ -1,0 +1,9 @@
+// Temporary. todo:fix this
+
+$breakpoints: (
+  xs: calc(576px - 280px - 160px),
+  sm: calc(768px - 280px - 160px),
+  md: calc(992px - 280px - 160px),
+  lg: calc(1200px - 280px - 160px),
+  xl: calc(1400px - 280px - 160px),
+);

@@ -1,0 +1,46 @@
+@use "./variables" as *;
+
+* {
+  box-sizing: border-box;
+}
+
+*::selection {
+  background-color: $clr-text-selection-bg !important;
+  color: $clr-text-selection !important;
+  -webkit-text-fill-color: $clr-text-selection !important;
+}
+
+::-moz-selection {
+  background: $clr-text-selection-bg !important;
+  color: $clr-text-selection !important;
+  -webkit-text-fill-color: $clr-text-selection !important;
+}
+
+.noscroll {
+  overflow: hidden;
+}
+
+img {
+  max-width: 100%;
+}
+
+* {
+  font-family: $font-body;
+}
+
+body {
+  color: $black;
+}
+
+b,
+strong {
+  font-weight: bold;
+}
+
+ul {
+  list-style-image: url("/wp-content/themes/dotcirca/assets/icons/bullet-flag.svg");
+}
+
+.wp-admin ul {
+  list-style-image: initial;
+}

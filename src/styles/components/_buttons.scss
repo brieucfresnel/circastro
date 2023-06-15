@@ -1,0 +1,101 @@
+@use "../base/variables" as *;
+@use "../base/mixins" as *;
+
+.c-button {
+  display: inline-block;
+  width: fit-content;
+  padding: 13px;
+  border-radius: 30px;
+
+  font-size: 1.3125rem;
+  line-height: 1.2;
+  text-decoration: none;
+
+  border: 1px solid transparent;
+  transition: all 0.3s;
+
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    background: url("/wp-content/themes/dotcirca/assets/img/button-texture.png")
+      center/cover no-repeat;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  &--red {
+    background-color: $red;
+    color: $white;
+  }
+
+  &--white-red {
+    background-color: $white;
+    border-color: $red;
+    color: $red;
+  }
+
+  &--white {
+    background-color: $white;
+    border-color: $black;
+    color: $black;
+  }
+
+  &--black {
+    background-color: $black;
+    border-color: $black;
+    color: $white;
+  }
+
+  &--dark-gray {
+    background-color: $gray-darker;
+    border-color: $gray-darker;
+    color: $white;
+  }
+
+  @include media-breakpoint-up(md) {
+    &--white-red {
+      &:hover {
+        border-color: $red;
+        background-color: $red;
+        color: $white;
+      }
+    }
+
+    &--white {
+      &:hover {
+        background-color: $red;
+        border-color: $red;
+        color: $white;
+      }
+    }
+
+    &--dark-gray {
+      &:hover {
+        background-color: $red;
+        border-color: $red;
+        color: $white;
+      }
+    }
+
+    &--black {
+      &:hover {
+        background-color: $red;
+        border-color: $red;
+        color: $white;
+      }
+    }
+
+    &--red {
+      &:hover {
+        background-color: $black;
+        border-color: $black;
+        color: $white;
+      }
+    }
+  }
+}

@@ -1,0 +1,300 @@
+@use "../base/variables" as *;
+@use "../base/mixins" as *;
+
+//------------------------------------------------------------
+// GENERAL ANIMATIONS
+//------------------------------------------------------------
+
+.a-fade-in {
+  opacity: 0;
+  transition: all 1.2s $Power1EaseOut;
+
+  @at-root .acfe-fc-preview &,
+    &.is-inview {
+    opacity: 1;
+  }
+}
+
+// a-translate-ltr
+
+.a-translate-ltr {
+  opacity: 0;
+  transition: all 1.5s $Power3EaseOut;
+  transform: translateX(-100px);
+
+  @at-root .acfe-fc-preview &,
+    &.is-inview {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+// a-translate-rtl
+
+.a-translate-rtl {
+  opacity: 0;
+  transition: all 1.5s $Power3EaseOut;
+  transform: translateX(100px);
+
+  @at-root .acfe-fc-preview &,
+    &.is-inview {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.a-translate-ttb {
+  opacity: 0;
+  transition: all 1.5s $Power3EaseOut;
+  transform: translateY(-100px);
+
+  @at-root .acfe-fc-preview &,
+    &.is-inview {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.a-translate-btt {
+  opacity: 0;
+  transition: all 1.5s $Power3EaseOut;
+  transform: translateY(100px);
+
+  @at-root .acfe-fc-preview &,
+    &.is-inview {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+//------------------------------------------------------------
+// TEXT LINE ANIMATIONS
+//------------------------------------------------------------
+
+.a-line-btt {
+  display: inline-block;
+  // overflow: hidden;
+  opacity: 0;
+  transition: opacity 1s $Power3EaseOut;
+
+  & > div,
+  & > article,
+  & > a {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(30px) rotate(5deg);
+    transform-origin: top left;
+    transition: all 1.2s $Power3EaseOut;
+
+    //Stagger adding delay on each nth-child
+    $startTop: 0;
+    $endTop: 20;
+    $delayValue: 0.05s;
+
+    @for $i from $startTop through $endTop {
+      &:nth-child(#{$i}) {
+        transition-delay: calc($i * $delayValue);
+      }
+    }
+  }
+
+  @at-root .acfe-fc-preview &,
+    &.is-inview {
+    opacity: 1;
+
+    & > div,
+    & > article,
+    & > a {
+      transform: translateY(0px) rotate(0deg);
+      opacity: 1;
+    }
+  }
+}
+
+.a-line-ttb {
+  display: inline-block;
+  // overflow: hidden;
+  opacity: 0;
+  transition: opacity 1s $Power3EaseOut;
+
+  & > div,
+  & > article,
+  & > a {
+    display: inline-block;
+    opacity: 0;
+    transform: translateY(-30px) rotate(-5deg);
+    transform-origin: top left;
+    transition: all 1.2s $Power3EaseOut;
+
+    //Stagger adding delay on each nth-child
+    $startTop: 0;
+    $endTop: 20;
+    $delayValue: 0.05s;
+
+    @for $i from $startTop through $endTop {
+      &:nth-child(#{$i}) {
+        transition-delay: calc($i * $delayValue);
+      }
+    }
+  }
+
+  @at-root .acfe-fc-preview &,
+    &.is-inview {
+    opacity: 1;
+
+    & > div,
+    & > article,
+    & > a {
+      transform: translateY(0px) rotate(0deg);
+      opacity: 1;
+    }
+  }
+}
+
+//------------------------------------------------------------
+// IMAGES CLIP PATH ANIMATIONS
+//------------------------------------------------------------
+// IMG REVEAL from left to right
+
+.a-clippath-ltr {
+  .thumb {
+    figure {
+      background: $clr-primary;
+      transition: all 0.6s $Power3EaseInOut;
+      clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
+
+      img {
+        transition: all 1s $Power3EaseInOut;
+        transition-delay: 0.4s;
+        clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
+      }
+    }
+  }
+
+  @at-root .acfe-fc-preview &,
+    &.is-inview {
+    .thumb {
+      figure {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+
+        img {
+          clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+      }
+    }
+  }
+}
+
+// IMG REVEAL from right to left
+.a-clippath-rtl {
+  .thumb {
+    figure {
+      background: yellow;
+      transition: all 0.6s $Power3EaseInOut;
+      clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+
+      img {
+        transition: all 1s $Power3EaseInOut;
+        transition-delay: 0.4s;
+        clip-path: polygon(0 0, 0 0, 0 100%, 0% 100%);
+      }
+    }
+  }
+
+  @at-root .acfe-fc-preview &,
+    &.is-inview {
+    .thumb {
+      figure {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+
+        img {
+          clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+      }
+    }
+  }
+}
+
+// IMG REVEAL from top to bottom
+.a-clippath-ttb {
+  .thumb {
+    figure {
+      background: yellow;
+      transition: all 0.6s $Power3EaseInOut;
+      clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+
+      img {
+        transition: all 1s $Power3EaseInOut;
+        transition-delay: 0.4s;
+        clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+      }
+    }
+  }
+
+  @at-root .acfe-fc-preview &,
+    &.is-inview {
+    .thumb {
+      figure {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+
+        img {
+          clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+        }
+      }
+    }
+  }
+}
+
+// IMG REVEAL Circle growing
+.a-clippath-circle {
+  transition: all 0.6s ease;
+  clip-path: circle(0% at 50% 50%);
+
+  @at-root .acfe-fc-preview &,
+    &.is-inview {
+    clip-path: circle(70.7% at 50% 50%);
+  }
+}
+
+// Slide Bottom To Top
+.slide-btt {
+  transition: all 1s $Power3EaseInOut;
+  clip-path: polygon(0 100%, 0 100%, 100% 100%, 100% 100%);
+
+  @at-root .acfe-fc-preview &,
+    &.is-inview {
+    clip-path: polygon(0 0, 0 100%, 100% 100%, 100% 0%);
+  }
+}
+
+// Slide Top To Bottom
+.slide-ttb {
+  transition: all 1s $Power3EaseInOut;
+  clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+
+  @at-root .acfe-fc-preview &,
+    &.is-inview {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  }
+}
+
+// Slide Left To Right
+.slide-ltr {
+  transition: all 1s $Power4EaseInOut;
+  clip-path: polygon(0 0, 0 0%, 0 100%, 0 100%);
+
+  @at-root .acfe-fc-preview &,
+    &.is-inview {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  }
+}
+
+.slide-rtl {
+  transition: all 1s $Power4EaseInOut;
+  clip-path: polygon(100% 0, 100% 0, 100% 100%, 100% 100%);
+
+  @at-root .acfe-fc-preview &,
+    &.is-inview {
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0% 100%);
+  }
+}
