@@ -1,10 +1,11 @@
 ---
 import MainFlexible from "../components/MainFlexible.astro";
 import Layout from "../layouts/Layout.astro";
-import { getPageBySlug } from '../lib/api';
+import { getPageBySlug } from "../lib/api";
 
-const page = await getPageBySlug('accueil');
+const page = await getPageBySlug("accueil");
 ---
-<Layout title={'Accueil'}>
-    <MainFlexible page={page}>
+
+<Layout title={"Accueil"}>
+    <MainFlexible page={page} />
 </Layout>

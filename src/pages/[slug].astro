@@ -3,20 +3,23 @@ import MainFlexible from "../components/MainFlexible.astro";
 import Layout from "../layouts/Layout.astro";
 import { getPageBySlug, getAllPageSlugs } from "../lib/api";
 
-export async function getStaticPaths() {
-    const pages = await getAllPageSlugs();
-    return pages.map((page) => {
-        return {
-            params: { slug: page },
-        };
-    });
+const pages = await getAllPageSlugs();
+
+pages.map((page) => {
+    return {
+        params: { slug: page },
+    };
+});
+
+const { slug } = Astro.params;
+
+if (slug === undefined) {
+    throw new Error("Slug is required");
 }
 
-const title = Astro.params.slug;
-
-const page = await getPageBySlug(Astro.params.slug);
+const page = await getPageBySlug(slug);
 ---
 
-<Layout title={title}>
+<Layout title={slug}>
     <MainFlexible page={page} />
 </Layout>
