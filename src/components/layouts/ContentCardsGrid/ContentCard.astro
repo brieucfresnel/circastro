@@ -1,8 +1,26 @@
 ---
-const { title, text } = Astro.props;
+import { getMedia } from "../../../lib/api";
+import Button from "../../Button.astro";
+
+const { title, text, imageId, objectFit, colsCount, button } = Astro.props;
+const image = await getMedia(imageId);
+
+const sizeClass = colsCount === 2 ? "size-1 " : "size-2";
 ---
 
-<div class="f-content-cards-grid__item c-content-card">
+<div
+    class:list={[
+        "f-content-cards-grid__item",
+        "c-content-card",
+        "a-fade-in",
+        sizeClass,
+    ]}
+>
+    <img
+        class:list={["c-content-card__thumbnail", objectFit]}
+        src={image.source_url}
+        alt={image.alt_text}
+    />
     <div class="c-content-card__main">
         <div class="c-content-card__titles">
             <h3 class="c-content-card__title">{title}</h3>
@@ -12,6 +30,13 @@ const { title, text } = Astro.props;
                 {text}
             </div>
         </div>
+        {
+            button && (
+                <div class="c-content-card__button-wrapper">
+                    <Button data={button} />
+                </div>
+            )
+        }
     </div>
 </div>
 
@@ -21,7 +46,7 @@ const { title, text } = Astro.props;
     .c-content-card {
         color: $black;
 
-        @at-root .cols-2 &__main {
+        &.size-1 &__main {
             padding: 0 20px;
         }
 
@@ -72,12 +97,12 @@ const { title, text } = Astro.props;
                 padding-left: 40px;
             }
 
-            @at-root .cols-2 &__thumbnail {
+            &.size-1 &__thumbnail {
                 height: 300px;
                 max-height: 300px;
             }
 
-            @at-root .cols-3 &__thumbnail {
+            &.size-2 &__thumbnail {
                 height: 200px;
                 max-height: 200px;
             }
@@ -86,16 +111,16 @@ const { title, text } = Astro.props;
         @include media-breakpoint-up(md) {
             padding-bottom: 40px;
 
-            @at-root .cols-2 &__main {
+            &.size-1 &__main {
                 padding: 0 12%;
             }
 
-            @at-root .cols-2 &__thumbnail {
+            &.size-1 &__thumbnail {
                 height: 300px;
                 max-height: 300px;
             }
 
-            @at-root .cols-3 &__thumbnail {
+            &.size-2 &__thumbnail {
                 height: 200px;
                 max-height: 200px;
             }
@@ -106,25 +131,25 @@ const { title, text } = Astro.props;
                 gap: 15px 80px;
             }
 
-            @at-root .cols-2 &__thumbnail {
+            &.size-1 &__thumbnail {
                 margin-bottom: 50px;
                 height: 400px;
                 max-height: 400px;
             }
 
-            @at-root .cols-3 &__thumbnail {
+            &.size-2 &__thumbnail {
                 height: 300px;
                 max-height: 300px;
             }
         }
 
         @include media-breakpoint-up(xl) {
-            @at-root .cols-2 &__thumbnail {
+            &.size-1 &__thumbnail {
                 height: 500px;
                 max-height: 500px;
             }
 
-            @at-root .cols-3 &__thumbnail {
+            &.size-2 &__thumbnail {
                 height: 400px;
                 max-height: 400px;
             }

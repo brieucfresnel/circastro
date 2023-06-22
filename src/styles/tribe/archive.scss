@@ -90,7 +90,7 @@
 
   // Icon
   &::before {
-    content: url("/wp-content/themes/metronum/assets/icons/search.svg");
+    content: url("/icons/search.svg");
     display: flex;
     align-items: center;
     height: 100%;
@@ -307,7 +307,7 @@
 
   &:nth-child(odd) {
     .title-deco {
-      content: url("/wp-content/themes/dotcirca/assets/img/man-with-flag-white.gif");
+      content: url("/images/man-with-flag-white.gif");
     }
   }
 
@@ -315,7 +315,7 @@
     background-color: $gray;
 
     .title-deco {
-      content: url("/wp-content/themes/dotcirca/assets/img/man-with-flag-gray.gif");
+      content: url("/images/man-with-flag-gray.gif");
     }
   }
 

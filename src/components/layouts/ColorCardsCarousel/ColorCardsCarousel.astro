@@ -1,9 +1,359 @@
+---
+import { getMedia } from "../../../lib/api";
+import { uid } from "../../../lib/utils";
+import Button from "../../Button.astro";
 
+const {
+    h_type,
+    h_size,
+    bg_color,
+    show_top_border,
+    title,
+    title_en,
+    introduction,
+    introduction_en,
+    cards,
+} = Astro.props.data;
+
+const TitleTag = h_type;
+
+const cardsWithDecos = Array();
+await cards.forEach(async (card) => {
+    cardsWithDecos.push({
+        ...card,
+        decoration: await getMedia(card.decoration),
+    });
+});
+
+async function getCardMedias(cards) {
+    return await Promise.all(
+        cards.map(async (card) => {
+            return await getMedia(card.decoration);
+        })
+    );
+}
+
+const medias = await getCardMedias(cards);
+
+for (let i = 0; i < medias.length; i++) {
+    cards[i].decoration = medias[i];
+}
 ---
- const {title, subtitle} = Astro.props.data; 
----
-<div class="f-color-cards-carousel f-layout">
+
+<div
+    id={uid()}
+    class:list={[
+        "f-color-cards-carousel",
+        "f-layout",
+        { "f-layout--has-border-top": show_top_border },
+        `bg-${bg_color}`,
+    ]}
+>
     <div class="l-container">
-        <div class="f-layout__title">{title}</div>
+        <div class="f-layout__header">
+            <div class="f-layout__titles">
+                {
+                    title && (
+                        <TitleTag
+                            class:list={[
+                                "f-layout__title",
+                                "f-color-cards-carousel__title",
+                                "a-line-ttb",
+                                h_size,
+                            ]}
+                        >
+                            {title}
+                        </TitleTag>
+                    )
+                }
+
+                {
+                    title_en && (
+                        <div class="f-layout__title-en a-fade-in">
+                            {title_en}
+                        </div>
+                    )
+                }
+            </div>
+            {
+                introduction && (
+                    <div class="f-layout__introductions">
+                        <div class="f-layout__introduction a-fade-in wysiwyg body-md">
+                            {introduction}
+                        </div>
+                        {introduction_en && (
+                            <div class="f-layout__introduction-en a-fade-in wysiwyg body-md">
+                                {introduction_en}
+                            </div>
+                        )}
+                    </div>
+                )
+            }
+        </div>
     </div>
+
+    {
+        cards && (
+            <>
+                <swiper-wrapper>
+                    <swiper-container
+                        init="false"
+                        class="f-color-cards-carousel__slider"
+                    >
+                        {cards.map((card) => (
+                            <swiper-slide class="c-color-card a-fade-in">
+                                <div
+                                    class:list={[
+                                        "c-color-card__header",
+                                        `bg-${card.bg_color}`,
+                                    ]}
+                                >
+                                    <h3 class="c-color-card__title heading4">
+                                        {card.title}
+                                    </h3>
+                                    {card.decoration && (
+                                        <img
+                                            src={card.decoration.source_url}
+                                            class="c-color-card__deco"
+                                        />
+                                    )}
+                                </div>
+                                <div
+                                    class="c-color-card__text wysiwyg body-lg"
+                                    set:html={card.text}
+                                />
+                                {card.button && (
+                                    <div class="c-color-card__button-container">
+                                        <Button data={card.button} />
+                                    </div>
+                                )}
+                            </swiper-slide>
+                        ))}
+                    </swiper-container>
+                    <div class="l-container">
+                        <div class="f-color-cards-carousel__index c-slider__index">
+                            <span class="c-slider__prev swiper-button-prev">
+                                <img src="/icons/slider-arrow-left.svg" />
+                            </span>
+                            <div class="c-slider__index-mid">
+                                <span class="current-index">1</span> /{" "}
+                                <span class="total-slides">0</span>
+                            </div>
+                            <span class="c-slider__next swiper-button-next">
+                                <img src="<?php echo DOT_THEME_URI ?>/assets/icons/slider-arrow-right.svg" />
+                            </span>
+                        </div>
+                    </div>
+                </swiper-wrapper>
+            </>
+        )
+    }
 </div>
+
+<style lang="scss">
+    @use "../../../styles/base/variables" as *;
+    @use "../../../styles/base/mixins" as *;
+
+    .f-color-cards-carousel {
+        padding-bottom: 50px;
+
+        .l-container:first-child {
+            padding-bottom: 0;
+        }
+
+        .slick-list {
+            position: relative;
+            padding: 0 20% 0 0 !important;
+        }
+
+        .slick-track {
+            margin-left: calc($container-base-margin / 2 - 7px) !important;
+            display: flex;
+            align-items: stretch;
+        }
+
+        @include media-breakpoint-up(lg) {
+            padding-bottom: 70px;
+
+            .slick-track {
+                margin-left: calc($container-base-margin - 7px) !important;
+            }
+        }
+
+        @include media-breakpoint-up(xxl) {
+            &__slider {
+                max-width: 85%;
+                margin-left: auto;
+                margin-right: auto;
+            }
+
+            .slick-list {
+                padding: 0 !important;
+            }
+
+            .slick-track {
+                margin-left: unset !important;
+            }
+        }
+
+        @at-root .acfe-fc-preview &__slider {
+            display: flex;
+            gap: 15px;
+
+            > * {
+                min-width: 0;
+                flex-basis: 50%;
+            }
+        }
+    }
+
+    .c-color-card {
+        background-color: $white;
+        padding: 20px;
+        border-radius: 9px;
+        height: inherit !important;
+
+        &__header {
+            position: relative;
+            padding: 30px 10px 70px;
+            border-radius: 20px;
+            min-height: 160px;
+        }
+
+        &__title {
+            color: $black;
+        }
+
+        &__deco {
+            position: absolute;
+            bottom: -20%;
+            right: -15%;
+
+            max-width: 230px;
+            max-height: 120px;
+            object-fit: contain;
+        }
+
+        &__text {
+            color: $gray-darker;
+            padding: 0 10px;
+
+            a {
+                position: relative;
+                color: $gray-darker;
+                text-decoration: none;
+                transition: all 0.3s;
+                z-index: 1;
+
+                &::after {
+                    content: "";
+                    display: block;
+                    position: absolute;
+                    bottom: 0;
+                    left: 0;
+                    height: 1px;
+                    width: 100%;
+                    background: $red;
+                    z-index: -1;
+                    transition: all 0.1s;
+                }
+
+                &:hover::after {
+                    height: 2px;
+                    bottom: -2px;
+                }
+            }
+        }
+
+        &__button-container {
+            display: flex;
+            justify-content: flex-end;
+        }
+
+        @include media-breakpoint-up(lg) {
+            &__header {
+                min-height: 190px;
+            }
+        }
+
+        @at-root .acfe-fc-preview &:not(:nth-child(1)):not(:nth-child(2)) {
+            display: none !important;
+        }
+    }
+</style>
+
+<script>
+    import gsap from "gsap";
+    import ScrollTrigger from "gsap/ScrollTrigger";
+    gsap.registerPlugin(ScrollTrigger);
+
+    import { Navigation } from "swiper";
+    import { register as loadSwiper } from "swiper/element/bundle";
+    loadSwiper();
+
+    const layoutClass = ".f-color-cards-carousel";
+    const layouts = document.querySelectorAll(layoutClass);
+
+    function animate(layout) {
+        let tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: layout.querySelector(`${layoutClass} .l-container`),
+                start: "top 80%",
+                toggleActions: "play none play none",
+                // markers: true
+            },
+        });
+
+        let delay = 0.3; // initial delay value, incremented for each element
+
+        if (layout.querySelectorAll(`${layoutClass} .c-color-card`)) {
+            let colorCardCarousel = layout.querySelectorAll(
+                `${layoutClass} .c-color-card`
+            );
+
+            colorCardCarousel.forEach((dropdownslistItem) => {
+                tl.add(function () {
+                    // alert("dropdownslistItem");
+                    dropdownslistItem.classList.add("is-inview");
+                }, delay);
+                delay += 0.1;
+            });
+        }
+    }
+
+    function initSlider(layout) {
+        const sliderEl = layout.querySelector(`${layoutClass}__slider`);
+
+        if (!sliderEl) return;
+
+        const swiperEl = layout.querySelector("swiper-container");
+
+        const params = {
+            modules: [Navigation],
+            slidesPerView: 1,
+            breakpoints: {
+                768: {
+                    slidesPerView: 2,
+                },
+                1200: {
+                    slidesPerView: 3,
+                },
+                18000: {
+                    slidesPerView: 4,
+                },
+            },
+            navigation: {
+                prevEl: ".swiper-button-prev",
+                nextEl: ".swiper-button-next",
+            },
+        };
+
+        Object.assign(swiperEl, params);
+        swiperEl.initialize();
+    }
+
+    [...layouts].forEach((layout) => {
+        animate(layout);
+        initSlider(layout);
+    });
+</script>

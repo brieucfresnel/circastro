@@ -1,0 +1,206 @@
+---
+type MenuItem = {
+    ID: Number;
+    post_author: String;
+    post_date: String;
+    post_date_gmt: String;
+    post_content: String;
+    post_title: String;
+    post_excerpt: String;
+    post_status: String;
+    comment_status: String;
+    ping_status: String;
+    post_password: String;
+    post_name: String;
+    to_ping: String;
+    pinged: String;
+    post_modified: String;
+    post_modified_gmt: String;
+    post_content_filtered: String;
+    post_parent: Number;
+    guid: String;
+    menu_order: Number;
+    post_type: String;
+    post_mime_type: String;
+    comment_count: String;
+    filter: String;
+    db_id: Number;
+    menu_item_parent: String;
+    object_id: String;
+    object: String;
+    type: String;
+    type_label: String;
+    url: URL;
+    title: String;
+    target: any;
+    attr_title: String;
+    description: String;
+    classes: Array<String>;
+    xfn: String;
+    slug: String;
+};
+
+type Menu = {
+    term_id: Number;
+    name: String;
+    slug: String;
+    term_group: Number;
+    term_taxonomy_id: Number;
+    taxonomy: String;
+    description: String;
+    parent: Number;
+    count: Number;
+    filter: String;
+    items: Array<MenuItem>;
+};
+
+import { getMenu, getOption, getMedia } from "../../lib/api";
+
+const mainMenu: Menu = await getMenu("main-menu");
+const mainMenuItems: Array<MenuItem> = mainMenu.items;
+
+const sideMenu: Menu = await getMenu("side-menu");
+const sideMenuItems: Array<MenuItem> = sideMenu.items;
+
+const logoId = await getOption("logo");
+const logo = await getMedia(logoId);
+---
+
+<header id="navbar" class="l-navbar">
+    <div class="l-navbar__container">
+        <a href="/" class="l-navbar__logo">
+            <img src={logo.source_url} alt="Circa" />
+        </a>
+
+        <div class="l-navbar__menus">
+            <div class="l-navbar__menu l-navbar__main-menu">
+                {
+                    mainMenuItems.map((item) => (
+                        <a
+                            href={"/" + item.slug}
+                            target={item.target}
+                            class:list={item.classes}
+                            set:html={item.title}
+                        />
+                    ))
+                }
+                <a
+                    href="/"
+                    class="l-navbar__cta l-navbar__cta--in-menu c-button c-button--red c-button--texture"
+                >
+                    Billetterie
+                </a>
+            </div>
+            <div class="l-navbar__menu l-navbar__side-menu">
+                {
+                    sideMenuItems.map((item) => (
+                        <a
+                            href={"/" + item.slug}
+                            target={item.target}
+                            class:list={item.classes}
+                            set:html={item.title}
+                        />
+                    ))
+                }
+            </div>
+        </div>
+
+        <div class="l-navbar__socials"></div>
+
+        <div class="l-navbar__cta-toggle">
+            <a
+                href="/"
+                target="_blank"
+                class="l-navbar__cta l-navbar__cta--mobile c-button c-button--red"
+            >
+                Billetterie
+            </a>
+
+            <div id="navbar-toggle" class="l-navbar__toggle c-navbar-toggle">
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </div>
+    <img
+        id="menu-open-deco"
+        class="l-navbar__menu-open-deco"
+        src="/images/deco-frieze.png"
+    />
+</header>
+
+<script>
+    Menu();
+
+    function Menu() {
+        const navbar: HTMLElement = document.querySelector("#navbar");
+        const toggleButton = document.querySelector("#navbar-toggle");
+        let allowSwitchFromScroll = true;
+
+        if (!navbar || !toggleButton) return;
+
+        toggleButton.addEventListener("click", toggle);
+
+        document.addEventListener("scroll", switchLayoutOnScroll);
+
+        navbar.addEventListener("mouseover", setHoverLayout);
+
+        navbar.addEventListener("mouseout", resetLayoutAfterHover);
+
+        function toggle() {
+            if (navbar.dataset.isOpen) {
+                delete navbar.dataset.isOpen;
+            } else {
+                navbar.dataset.isOpen = "true";
+            }
+
+            document.documentElement.classList.toggle("noscroll");
+        }
+
+        function switchLayoutOnScroll() {
+            // Allow switch from scroll if user scrolled up to 0 without condensing navbar
+            if (navbar.classList.contains("is-hover") && window.scrollY === 0) {
+                navbar.classList.remove("is-hover");
+                allowSwitchFromScroll = true;
+            }
+
+            if (!allowSwitchFromScroll) return;
+
+            if (
+                window.scrollY > 0 &&
+                !navbar.classList.contains("is-condensed")
+            ) {
+                navbar.classList.add("is-condensed");
+            }
+
+            if (
+                window.scrollY === 0 &&
+                navbar.classList.contains("is-condensed")
+            ) {
+                navbar.classList.remove("is-condensed");
+            }
+        }
+
+        function setHoverLayout() {
+            if (window.scrollY === 0) return;
+
+            allowSwitchFromScroll = false;
+
+            if (navbar.classList.contains("is-condensed")) {
+                navbar.classList.remove("is-condensed");
+                navbar.classList.add("is-hover");
+            }
+        }
+
+        function resetLayoutAfterHover() {
+            if (window.scrollY === 0) return;
+
+            if (!navbar.classList.contains("is-condensed")) {
+                navbar.classList.add("is-condensed");
+                navbar.classList.remove("is-hover");
+
+                allowSwitchFromScroll = true;
+            }
+        }
+    }
+</script>

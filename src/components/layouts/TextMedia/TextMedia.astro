@@ -1,9 +1,411 @@
+---
+import { getMedia } from "../../../lib/api";
+import { uid } from "../../../lib/utils";
+import Button from "../../Button.astro";
 
+const {
+    h_type,
+    h_class,
+    bg_color,
+    show_top_border,
+    is_inverse,
+    main_title,
+    main_title_en,
+    introduction,
+    introduction_en,
+    inner_title,
+    inner_title_en,
+    text,
+    text_en,
+    buttons,
+    image,
+    embed,
+} = Astro.props.data;
+
+const TitleTag = h_type;
+
+const imageUrl = (await getMedia(image)).source_url;
 ---
 
----
-<div class="f-text-media f-layout">
+<section
+    id={uid()}
+    class:list={[
+        "f-text-media",
+        "f-layout",
+        { "f-layout--has-border-top": show_top_border },
+        `bg-${bg_color}`,
+        { "is-reversed": is_inverse },
+    ]}
+>
     <div class="l-container">
-        <div class="f-layout__title">Text Media</div>
+        <div class="f-layout__header">
+            <div class="f-layout__titles">
+                {
+                    main_title && (
+                        <TitleTag
+                            class:list={[
+                                "f-layout__title",
+                                "f-text-media__title",
+                                "a-line-ttb",
+                                h_class,
+                            ]}
+                        >
+                            {main_title}
+                        </TitleTag>
+                    )
+                }
+
+                {
+                    main_title_en && (
+                        <div class="f-layout__title-en a-fade-in">
+                            {main_title_en}
+                        </div>
+                    )
+                }
+            </div>
+            {
+                introduction && (
+                    <div class="f-layout__introductions">
+                        <div class="f-layout__introduction wysiwyg body-md a-fade-in">
+                            {introduction}
+                        </div>
+
+                        {introduction_en && (
+                            <div class="f-layout__introduction-en wysiwyg body-md a-fade-in">
+                                {introduction_en}
+                            </div>
+                        )}
+                    </div>
+                )
+            }
+        </div>
+
+        <div class="f-text-media__content">
+            <div class="f-text-media__main a-fade-in">
+                <div class="f-text-media__main-inner">
+                    {
+                        inner_title && (
+                            <div class="f-text-media__inner-titles">
+                                <h3 class="f-text-media__inner-title heading3">
+                                    {inner_title}
+                                </h3>
+                                {inner_title_en && (
+                                    <div class="f-text-media__inner-title-en heading5">
+                                        {inner_title_en}
+                                    </div>
+                                )}
+                            </div>
+                        )
+                    }
+
+                    {
+                        text && (
+                            <div class="f-text-media__texts">
+                                <div
+                                    class="f-text-media__text wysiwyg body-lg"
+                                    set:html={text}
+                                />
+                                {text_en && (
+                                    <div
+                                        class="f-text-media__text-en wysiwyg body-lg a-fade-in"
+                                        set:html={text_en}
+                                    />
+                                )}
+                            </div>
+                        )
+                    }
+
+                    {
+                        buttons && (
+                            <div class="f-text-media__buttons">
+                                {buttons.map((button) => (
+                                    <Button data={button} />
+                                ))}
+                            </div>
+                        )
+                    }
+                </div>
+            </div>
+            <div class="f-text-media__aside">
+                {image.length === 1 && <img src={imageUrl} alt="" />}
+                {
+                    image.length > 1 && (
+                        <>
+                            <div class="f-text-media__slider">
+                                {image.forEach((image) => {
+                                    <div class="f-text-media__slide">
+                                        <img
+                                            class="f-text-media__slide-image"
+                                            src={image.source_url}
+                                        />
+                                    </div>;
+                                })}
+                            </div>
+                            <div class="f-text-media__index c-slider__index">
+                                <span class="c-slider__prev btn-prev">
+                                    <img src="/icons/slider-arrow-left.svg" />
+                                </span>
+                                <div class="c-slider__index-mid">
+                                    <span class="current-index">1</span> /{" "}
+                                    <span class="total-slides">0</span>
+                                </div>
+                                <span class="c-slider__next btn-next">
+                                    <img src="/icons/slider-arrow-right.svg" />
+                                </span>
+                            </div>
+                        </>
+                    )
+                }
+
+                {
+                    embed && (
+                        <div
+                            class="f-text-media__embed-wrapper"
+                            set:html={embed}
+                        />
+                    )
+                }
+            </div>
+        </div>
     </div>
-</div>
+</section>
+
+<style lang="scss">
+    @use "../../../styles/base/variables" as *;
+    @use "../../../styles/base/mixins" as *;
+
+    .f-text-media {
+        &__main-title {
+            margin-bottom: 10px;
+        }
+
+        &__content {
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 10px;
+            padding-bottom: 20px;
+        }
+
+        &__image {
+            display: block;
+            width: 100%;
+            height: auto;
+            margin-bottom: 10px;
+            border-radius: 6px;
+        }
+
+        &__video {
+            iframe {
+                width: 100%;
+                height: auto;
+                aspect-ratio: 16/9;
+                display: block;
+                border-radius: 21px;
+                margin: auto;
+            }
+        }
+
+        &__inner-titles {
+            margin-bottom: 20px;
+        }
+
+        &__inner-title-en {
+            margin-top: 10px;
+            color: $brown-light;
+            display: block;
+        }
+
+        &__titles + &__texts {
+            margin-top: 20px;
+        }
+
+        &__texts {
+            p {
+                margin: 0 0 10px 0;
+            }
+        }
+
+        &__text-en {
+            margin-top: 20px;
+            color: $brown-light;
+        }
+
+        &__embed-wrapper {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            width: 100%;
+
+            iframe {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                border-radius: 10px;
+            }
+        }
+
+        &__buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 30px;
+        }
+
+        &__slide {
+            margin-right: 5px;
+            border-radius: 20px;
+        }
+
+        &__slide-image {
+            display: block;
+            border-radius: 20px;
+            object-fit: cover;
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+
+        .slick-list {
+            border-radius: 20px;
+        }
+
+        .slick-track {
+            display: flex !important;
+        }
+
+        .slick-slide {
+            height: auto;
+        }
+
+        @at-root .acfe-fc-preview &__slide:not(:first-child) {
+            display: none;
+        }
+
+        @include media-breakpoint-up(md) {
+            &__main-title {
+                margin-top: 30px;
+            }
+
+            &__content {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                grid-gap: 50px;
+                align-items: center;
+            }
+
+            &__inner-title-en {
+                margin-top: 0;
+            }
+
+            &__main {
+                display: flex;
+                justify-content: center;
+            }
+
+            &.is-reversed &__content {
+                > :first-child {
+                    grid-column: 2;
+                    grid-row: 1;
+                }
+
+                > :last-child {
+                    grid-column: 1;
+                    grid-row: 1;
+                }
+            }
+
+            &__texts {
+                margin-top: 10px;
+                max-width: 570px;
+
+                h1,
+                h2,
+                h3,
+                h4,
+                h5,
+                h6 {
+                    margin-bottom: 10px;
+                    display: block;
+
+                    &:not(:first-child) {
+                        margin-top: 20px;
+                    }
+                }
+            }
+
+            &__text-en {
+                padding-left: 40px;
+            }
+        }
+    }
+</style>
+
+<script>
+    import gsap from "gsap";
+    import ScrollTrigger from "gsap/ScrollTrigger";
+    gsap.registerPlugin(ScrollTrigger);
+
+    const layoutClass = ".f-text-media";
+    const layouts = document.querySelectorAll(layoutClass);
+
+    const animate = (layout) => {
+        let tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: layout.querySelector(`${layoutClass} .l-container`),
+                start: "top 80%",
+                toggleActions: "play none play none",
+                // markers: true
+            },
+        });
+        let delay = 0.3; // initial delay value, incremented for each element
+
+        if (layout.querySelector(`${layoutClass}__main `)) {
+            tl.add(function () {
+                layout
+                    .querySelector(`${layoutClass}__main`)
+                    .classList.add("is-inview");
+            }, delay);
+            delay += 0.15;
+        }
+
+        if (layout.querySelector(`${layoutClass}__aside `)) {
+            tl.add(function () {
+                layout
+                    .querySelector(`${layoutClass}__aside`)
+                    .classList.add("is-inview");
+            }, delay);
+            delay += 0.15;
+        }
+    };
+
+    const initSlider = (layout) => {
+        const config = {
+            slidesToScroll: 1,
+            slidesToShow: 1,
+            variableWidth: false,
+            variableHeight: false,
+            mobileFirst: true,
+            draggable: true,
+            dots: true,
+        };
+
+        const btnPrevEl = layout.querySelector(`.btn-prev`);
+        const btnNextEl = layout.querySelector(`.btn-next`);
+        const sliderEl = layout.querySelector(`${layoutClass}__slider`);
+
+        if (!sliderEl) return;
+
+        sliderEl.slick({
+            ...config,
+            prevArrow: btnPrevEl,
+            nextArrow: btnNextEl,
+        });
+    };
+
+    [...layouts].forEach((layout) => {
+        animate(layout);
+        initSlider(layout);
+    });
+</script>

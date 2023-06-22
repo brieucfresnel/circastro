@@ -30,11 +30,29 @@ async function fetchAPI(endpoint, params) {
 }
 
 export async function getAllPages() {
-  const data = await fetchAPI('/pages?per_page=100')
-  return data;
+  return await fetchAPI('/wp/v2/pages?per_page=100&_embedded')
+}
+
+export async function getAllPageSlugs() {
+  return await fetchAPI('/dot/page-slugs');
 }
 
 export async function getPageBySlug(slug) {
-  const data = await fetchAPI(`/pages?slug=${slug}`)
-  return data;
+  return await fetchAPI(`/wp/v2/pages?slug=${slug}&_embedded`)
+}
+
+export async function getMenu(location) {
+  return await fetchAPI(`/menus/v1/locations/${location}`)
+}
+
+export async function getOptions() {
+  return await fetchAPI('/dot/options/all');
+}
+
+export async function getOption(slug) {
+  return fetchAPI(`/dot/options/${slug}`)
+}
+
+export async function getMedia(id) {
+  return fetchAPI(`/wp/v2/media/${id}`);
 }

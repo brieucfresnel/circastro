@@ -1,0 +1,282 @@
+---
+import { getMedia } from "../../../lib/api";
+import Button from "../../Button.astro";
+
+const {
+    h_type,
+    h_class,
+    bg_color,
+    show_top_border,
+    main_title,
+    main_title_en,
+    introduction,
+    introduction_en,
+    before_cta_title,
+    cta_title,
+    text,
+    inner_bg_color,
+    image,
+    right_deco,
+    button,
+} = Astro.props.data;
+
+const TitleTag = h_type;
+const imageUrl = (await getMedia(image)).source_url;
+const rightDecoUrl = (await getMedia(right_deco)).source_url;
+---
+
+<div
+    class:list={[
+        "f-cta",
+        "f-layout",
+        { "f-layout--has-border-top": show_top_border },
+        bg_color,
+    ]}
+>
+    <div class="l-container">
+        {
+            (main_title || introduction) && (
+                <div class="f-layout__header">
+                    <div class="f-layout__titles">
+                        {main_title && (
+                            <TitleTag
+                                class:list={[
+                                    "f-layout__title",
+                                    "f-cta__title",
+                                    "a-line-ttb",
+                                    h_class,
+                                ]}
+                            >
+                                {main_title}
+                            </TitleTag>
+                        )}
+
+                        {main_title_en && (
+                            <div class="f-layout__title-en a-fade-in">
+                                {main_title_en}
+                            </div>
+                        )}
+                    </div>
+
+                    {introduction && (
+                        <div class="f-layout__introductions">
+                            <div class="f-layout__introduction wysiwyg body-md a-fade-in">
+                                {introduction}
+                            </div>
+                            {introduction_en && (
+                                <div class="f-layout__introduction-en wysiwyg body-md a-fade-in">
+                                    {introduction_en}
+                                </div>
+                            )}
+                        </div>
+                    )}
+                </div>
+            )
+        }
+
+        <div
+            class="f-cta__banner text-white a-fade-in"
+            style=`--inner-bg-color: ${inner_bg_color}`
+        >
+            <div class="f-cta__main">
+                {
+                    before_cta_title && (
+                        <p class="f-cta__before-inner-title body-lg">
+                            {before_cta_title}
+                        </p>
+                    )
+                }
+
+                <div class="f-cta__inner-title">
+                    {cta_title}
+                </div>
+                {text && <div class="f-cta__text wysiwyg body-md">{text}</div>}
+
+                <div class="f-cta__button-wrapper">
+                    <Button data={button} />
+                </div>
+            </div>
+
+            <div class="f-cta__aside">
+                <img class="f-cta__image" src={imageUrl} />
+            </div>
+
+            {right_deco && <img class="f-cta__deco-right" src={rightDecoUrl} />}
+        </div>
+    </div>
+</div>
+
+<style lang="scss">
+    @use "../../../styles/base/_variables.scss" as *;
+    @use "../../../styles/base/_mixins.scss" as *;
+
+    .f-cta {
+        position: relative;
+
+        &__banner {
+            display: flex;
+            flex-direction: column-reverse;
+            padding: 15px 15px 30px 15px;
+            border-radius: $radius-sm;
+            position: relative;
+            background-color: var(--inner-bg-color);
+
+            &::before {
+                content: "";
+                display: block;
+                background: url("/images/texture.jpg") no-repeat center/cover;
+                position: absolute;
+                left: 0;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                mix-blend-mode: color-dodge;
+                border-radius: inherit;
+            }
+        }
+
+        &__main,
+        &__aside {
+            position: relative;
+            z-index: 1;
+        }
+
+        &__main {
+            padding-top: 30px;
+        }
+
+        &__before-inner-title {
+            margin: 0 0 10px 0;
+        }
+
+        &__inner-title {
+            font-size: 1.8125rem;
+            line-height: 1;
+            font-family: $font-headings;
+            margin-bottom: 5px;
+        }
+
+        &__image {
+            object-fit: contain;
+        }
+
+        &__text {
+            margin-bottom: 5px;
+        }
+
+        &__button-wrapper {
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+        }
+
+        &__deco-right {
+            display: none;
+        }
+
+        @include media-breakpoint-up(sm) {
+            &__banner {
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-between;
+                gap: 30px;
+                padding: 30px;
+            }
+
+            &__main {
+                flex-basis: 60%;
+                padding-top: 0;
+                padding-right: 50px;
+            }
+
+            &__aside {
+                flex-basis: 40%;
+                display: flex;
+                justify-content: flex-end;
+            }
+
+            &__inner-title {
+                font-size: 3.125rem;
+                line-height: auto;
+            }
+
+            &__before-inner-title,
+            &__inner-title,
+            &__text {
+                max-width: 560px;
+            }
+
+            &__button-wrapper {
+                justify-content: flex-start;
+            }
+
+            &__image {
+                max-height: 250px;
+            }
+        }
+
+        @include media-breakpoint-up(lg) {
+            .l-container:first-child {
+                padding-top: 30px;
+            }
+
+            &__banner {
+                max-width: 75%;
+                margin: 0 auto;
+                position: relative;
+            }
+
+            &__deco-right {
+                display: block;
+                position: absolute;
+                top: 50%;
+                right: 0;
+                transform: translateY(-50%) translateX(100%) translateZ(0);
+                max-width: 15%;
+                max-height: 350px;
+                object-fit: contain;
+            }
+        }
+    }
+
+    #main > .f-cta:first-child {
+        margin-top: 14px;
+
+        @include media-breakpoint-up(lg) {
+            margin-top: 5px;
+        }
+    }
+</style>
+
+<script>
+    import { gsap } from "gsap/dist/gsap";
+    import { ScrollTrigger } from "gsap/dist/ScrollTrigger";
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const layoutClass = ".f-cta";
+
+    const layouts = document.querySelectorAll(layoutClass);
+
+    [...layouts].forEach((layout) => {
+        const banner = layout.querySelector(`${layoutClass}__banner`);
+
+        let tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: layout.querySelector(`.l-container`),
+                start: "top 80%",
+                toggleActions: "play none play none",
+                // markers: true
+            },
+        });
+
+        let delay = 0.5; // initial delay value, incremented for each element
+
+        if (banner) {
+            tl.add(() => {
+                banner.classList.add("is-inview");
+            }, delay);
+            delay += 0.15;
+        }
+    });
+</script>

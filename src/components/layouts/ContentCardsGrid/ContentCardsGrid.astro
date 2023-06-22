@@ -1,22 +1,22 @@
 ---
+import { getMedia } from "../../../lib/api";
 import ContentCard from "./ContentCard.astro";
 
 const {
   title,
   title_en,
-  title_tag,
-  title_class,
+  h_type,
+  h_class,
   introduction,
   introduction_en,
   bg_color,
   items,
   show_top_border,
-  decoration_url,
   columns_count,
   object_fit,
 } = Astro.props.data;
 
-console.log(Astro.props.data);
+const TitleTag = h_type;
 ---
 
 <div
@@ -33,32 +33,29 @@ console.log(Astro.props.data);
       <div class="f-layout__titles">
         {
           title && (
-            <h2
+            <TitleTag
               class:list={[
                 "f-layout__title",
                 "f-content-cards-grid__title",
-                title_class,
+                "a-line-ttb",
+                h_class,
               ]}
             >
               {title}
-            </h2>
+            </TitleTag>
           )
         }
 
-        {
-          title_en && (
-            <div class="f-layout__title-en a-fade-in a-fade-in">{title_en}</div>
-          )
-        }
+        {title_en && <div class="f-layout__title-en a-fade-in">{title_en}</div>}
       </div>
       {
         introduction && (
           <div class="f-layout__introductions">
-            <div class="f-layout__introduction a-fade-in wysiwyg body-md">
+            <div class="f-layout__introduction wysiwyg body-md a-fade-in">
               {introduction}
             </div>
             {introduction_en && (
-              <div class="f-layout__introduction-en a-fade-in wysiwyg body-md">
+              <div class="f-layout__introduction-en wysiwyg body-md a-fade-in">
                 {introduction_en}
               </div>
             )}
@@ -71,7 +68,14 @@ console.log(Astro.props.data);
       items && (
         <div class="f-content-cards-grid__items">
           {items.map((item) => (
-            <ContentCard title={item.title} text={item.text} />
+            <ContentCard
+              title={item.title}
+              text={item.text}
+              imageId={item.image}
+              objectFit={object_fit}
+              colsCount={columns_count}
+              button={item.button}
+            />
           ))}
         </div>
       )
@@ -124,3 +128,35 @@ console.log(Astro.props.data);
     }
   }
 </style>
+
+<script>
+  import gsap from "gsap";
+
+  const layoutClass = ".f-content-cards-grid";
+  const layouts = document.querySelectorAll(layoutClass);
+
+  [...layouts].forEach((layout) => {
+    let tl = gsap.timeline({
+      scrollTrigger: {
+        trigger: layout.querySelector(`${layoutClass} .l-container`),
+        start: "top 80%",
+        // markers: true
+      },
+    });
+
+    let delay = 0.4; // initial delay value, incremented for each element
+
+    if (layout.querySelectorAll(`${layoutClass} .c-content-card`)) {
+      let colorCardCarousel = layout.querySelectorAll(
+        `${layoutClass} .c-content-card`
+      );
+
+      colorCardCarousel.forEach((dropdownslistItem) => {
+        tl.add(function () {
+          dropdownslistItem.classList.add("is-inview");
+        }, delay);
+        delay += 0.12;
+      });
+    }
+  });
+</script>
